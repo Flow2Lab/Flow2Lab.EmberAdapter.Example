@@ -1,0 +1,26 @@
+# Add this to your installations routing configuration
+#
+#-
+#  name: 'EmberAdapter Example'
+#  uriPattern: '<EmberAdapterExample>'
+#  defaults:
+#    '@format': 'json'
+#  subRoutes:
+#    EmberAdapterExample:
+#      package: Flowpack.EmberAdapter.Example
+
+-
+  name: 'EmberAdapter Example :: Controller with Argument'
+  uriPattern: 'products/{product}'
+  defaults:
+    '@package': 'Flowpack.EmberAdapter.Example'
+    '@controller': 'Product'
+  httpMethods: ['GET', 'PUT', 'DELETE']
+
+-
+  name: 'EmberAdapter Example :: Controller'
+  uriPattern: 'products'
+  defaults:
+    '@package': 'Flowpack.EmberAdapter.Example'
+    '@controller': 'Product'
+  httpMethods: ['GET', 'POST']

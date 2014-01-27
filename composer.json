@@ -1,0 +1,21 @@
+{
+    "name":"flowpack/emberadapter/example",
+    "description":"An example package to demonstrate how the Ember Adapter can be used.",
+    "keywords":["php"],
+    "type":"typo3-flow-package",
+    "minimum-stability": "dev",
+    "authors":[
+        {
+            "name":"Philipp Maier"
+        }
+    ],
+    "require":{
+        "typo3/flow": "*",
+        "flowpack/emberadapter": "master"
+    },
+    "autoload":{
+        "psr-0":{
+            "Flowpack\\EmberAdapter\\Example":"Classes/"
+        }
+    }
+}
