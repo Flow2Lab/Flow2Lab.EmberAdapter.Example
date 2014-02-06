@@ -23,8 +23,8 @@ class Product {
 	/**
 	 * @var Category
 	 * @ORM\ManyToOne
-	 * @Ember\Attribute
-	 * @Ember\BelongsTo(name="productCategory", model="Category")
+	 * @Ember\Attribute("productCategory")
+	 * @Ember\BelongsTo(model="Category", sideload=true)
 	 */
 	protected $category;
 
@@ -42,8 +42,14 @@ class Product {
 	protected $loadedAt;
 
 	/**
+	 * @var int
+	 * @Ember\Attribute(type="number")
+	 */
+	protected $inStock = 0;
+
+	/**
 	 * @var float
-	 * @Ember\Attribute(name="netSalesPrice", type="number")
+	 * @Ember\Attribute(name="netSalesPrice", type="number", options={"format" = "float"})
 	 */
 	protected $price = 0.0;
 
@@ -56,7 +62,7 @@ class Product {
 	 * @var \Doctrine\Common\Collections\Collection<\Flowpack\EmberAdapter\Example\Domain\Model\Tag>
 	 * @ORM\ManyToMany
 	 * @Ember\Attribute
-	 * @Ember\HasMany("Tag")
+	 * @Ember\HasMany(model="Tag", sideload=true)
 	 */
 	protected $tags;
 
@@ -151,6 +157,20 @@ class Product {
 	 */
 	public function getPrice() {
 		return $this->price;
+	}
+
+	/**
+	 * @param int $inStock
+	 */
+	public function setInStock($inStock) {
+		$this->inStock = $inStock;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getInStock() {
+		return $this->inStock;
 	}
 
 }
