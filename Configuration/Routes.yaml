@@ -24,3 +24,19 @@
     '@package': 'Flowpack.EmberAdapter.Example'
     '@controller': 'Product'
   httpMethods: ['GET', 'POST']
+
+-
+  name: 'EmberAdapter Example :: CategoryController with Argument'
+  uriPattern: 'categories/{category}'
+  defaults:
+    '@package': 'Flowpack.EmberAdapter.Example'
+    '@controller': 'Category'
+  httpMethods: ['GET', 'PUT', 'DELETE']
+
+-
+  name: 'EmberAdapter Example :: CategoryController'
+  uriPattern: 'categories'
+  defaults:
+    '@package': 'Flowpack.EmberAdapter.Example'
+    '@controller': 'Category'
+  httpMethods: ['GET', 'POST']

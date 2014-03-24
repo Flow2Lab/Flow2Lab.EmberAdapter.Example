@@ -2,6 +2,7 @@
 namespace Flowpack\EmberAdapter\Example\Domain\Model;
 
 use TYPO3\Flow\Annotations as Flow;
+use Doctrine\ORM\Mapping as ORM;
 use Flowpack\EmberAdapter\Annotations as Ember;
 
 /**
@@ -23,6 +24,16 @@ class Category {
 	 * @Ember\Attribute
 	 */
 	protected $description = '';
+
+	/**
+	 * This is just an example on how bidirectional relations are handled
+	 *
+	 * @var \Doctrine\Common\Collections\Collection<\Flowpack\EmberAdapter\Example\Domain\Model\Product>
+	 * @ORM\OneToMany(mappedBy="category")
+	 * @Ember\Attribute
+	 * @Ember\HasMany(model="Product", sideload=true)
+	 */
+	protected $products;
 
 	/**
 	 * @param string $description
@@ -50,6 +61,20 @@ class Category {
 	 */
 	public function getName() {
 		return $this->name;
+	}
+
+	/**
+	 * @param \Doctrine\Common\Collections\Collection $products
+	 */
+	public function setProducts($products) {
+		$this->products = $products;
+	}
+
+	/**
+	 * @return \Doctrine\Common\Collections\Collection
+	 */
+	public function getProducts() {
+		return $this->products;
 	}
 
 }

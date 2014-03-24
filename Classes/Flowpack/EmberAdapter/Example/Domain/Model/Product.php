@@ -22,7 +22,7 @@ class Product {
 
 	/**
 	 * @var Category
-	 * @ORM\ManyToOne
+	 * @ORM\ManyToOne(inversedBy="products")
 	 * @Ember\Attribute("productCategory")
 	 * @Ember\BelongsTo(model="Category", sideload=true)
 	 */
