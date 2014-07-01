@@ -1,0 +1,110 @@
+<f:layout name="Default" />
+
+<f:section name="Head">
+	<script src="{f:uri.resource(path: 'Scripts/jquery-2.1.0.js')}" ></script>
+	<script src="{f:uri.resource(path: 'Scripts/handlebars-1.3.0.js')}" ></script>
+	<script src="{f:uri.resource(path: 'Scripts/ember-1.5.1.js')}" ></script>
+	<script src="{f:uri.resource(path: 'Scripts/emberdata-1.0.0-beta8.js')}" ></script>
+
+	<link href="{f:uri.resource(path: 'Styles/bootstrap.css')}" rel="stylesheet" />
+	<script src="{f:uri.resource(path: 'Scripts/bootstrap.js')}" ></script>
+</f:section>
+
+<f:section name="Content">
+	<script>
+
+		App = Ember.Application.create({
+			LOG_TRANSITIONS: true,
+			LOG_BINDINGS: true,
+			LOG_ACTIVE_GENERATION: true,
+			LOG_VIEW_LOOKUPS: true
+		});
+
+		/* Models */
+
+		App.Category = DS.Model.extend();
+		App.Tag = DS.Model.extend();
+		App.Product = DS.Model.extend();
+
+		App.Category.reopen({
+			name: DS.attr('string'),
+			description: DS.attr('string'),
+			products: DS.hasMany(App.Product,  {inverse: 'category'})
+		});
+
+		App.Tag.reopen({
+			name: DS.attr('string')
+		});
+
+		App.Product.reopen({
+			name: DS.attr('string'),
+			createdOn: DS.attr('date'),
+			loadedAt: DS.attr('date'),
+			inStock: DS.attr('number'),
+			price: DS.attr('number'),
+
+			category: DS.belongsTo(App.Category),
+			tags: DS.hasMany(App.Tag)
+		});
+
+		/* Routing */
+		App.IndexRoute = Ember.Route.extend({
+			redirect: function() {
+				this.transitionTo('categories');
+			}
+		});
+
+		App.Router.map(function () {
+			this.resource('categories', function() {
+				this.route('new');
+				this.resource('category', {path: ':category_id'});
+			});
+		});
+
+		App.CategoriesRoute = Ember.Route.extend({
+			model: function(params) {
+				return this.store.find('category');
+			}
+		});
+
+		App.CategoriesController = Ember.ArrayController.extend({
+			needs: [],
+
+			actions: {
+				add: function() {
+					newRecord = this.store.createRecord('category', {name: 'New Name'});
+					this.transitionToRoute("category", newRecord);
+				},
+				save: function () {
+					var newRecord = this.get('model');
+					newRecord.save().then(function(model) {
+						//controller.transitionToRoute("categories");
+					}, function(model){
+						alert("Error while saving record!");
+					});
+				}
+			}
+		});
+
+		App.CategoryController = Ember.ObjectController.extend({
+			needs: [],
+
+			actions: {
+				save: function () {
+					var newRecord = this.get('model');
+					newRecord.save().then(function(model) {
+						//controller.transitionToRoute("categories");
+					}, function(model){
+						alert("Error while saving record!");
+					});
+				}
+			}
+		});
+
+	</script>
+
+
+	<script>
+		{templatejs -> f:format.raw()}
+	</script>
+</f:section>

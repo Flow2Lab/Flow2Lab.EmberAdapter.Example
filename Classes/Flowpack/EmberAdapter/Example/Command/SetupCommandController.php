@@ -6,6 +6,7 @@ use Flowpack\EmberAdapter\Example\Domain\Model\Category;
 use Flowpack\EmberAdapter\Example\Domain\Model\Product;
 use Flowpack\EmberAdapter\Example\Domain\Model\Tag;
 use Flowpack\EmberAdapter\Example\Domain\Repository\ProductRepository;
+use Flowpack\EmberAdapter\Example\Domain\Repository\CategoryRepository;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Cli\CommandController;
 
@@ -18,6 +19,12 @@ class SetupCommandController extends CommandController {
 	protected $productRepository;
 
 	/**
+	 * @Flow\Inject
+	 * @var CategoryRepository
+	 */
+	protected $categoryRepository;
+
+	/**
 	 * Adds example products to the database to test the ember adapter
 	 */
 	public function installCommand() {
@@ -27,9 +34,11 @@ class SetupCommandController extends CommandController {
 
 		$shoes = new Category();
 		$shoes->setName('Shoes');
+		$this->categoryRepository->add($shoes);
 
 		$tshirts = new Category();
 		$tshirts->setName('T-Shirts');
+		$this->categoryRepository->add($tshirts);
 
 		$product1 = new Product();
 		$product1->setName('The Shoe™ by Walk');

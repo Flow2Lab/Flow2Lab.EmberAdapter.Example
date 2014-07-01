@@ -10,6 +10,13 @@
 #      package: Flowpack.EmberAdapter.Example
 
 -
+  name: 'EmberAdapter Example :: Appliaction Frontend'
+  uriPattern: ''
+  defaults:
+    '@package': 'Flowpack.EmberAdapter.Example'
+    '@controller': 'Frontend'
+
+-
   name: 'EmberAdapter Example :: Controller with Argument'
   uriPattern: 'products/{product}'
   defaults:
