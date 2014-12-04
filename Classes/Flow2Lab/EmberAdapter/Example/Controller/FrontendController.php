@@ -1,5 +1,5 @@
 <?php
-namespace Flowpack\EmberAdapter\Example\Controller;
+namespace Flow2Lab\EmberAdapter\Example\Controller;
 
 use TYPO3\Flow\Mvc\Controller\ActionController;
 use TYPO3\Flow\Annotations as Flow;
@@ -25,7 +25,7 @@ class FrontendController extends ActionController {
 	 */
 	protected function getTemplatesJs() {
 		$resourcesPath = $this->packageManager->getPackageOfObject($this)->getResourcesPath();
-		$templates = \TYPO3\Flow\Utility\Files::readDirectoryRecursively($resourcesPath . 'Private/Templates/Handlebars', '.hbs');
+		$templates = \TYPO3\Flow\Utility\Files::readDirectoryRecursively($resourcesPath . 'Private/Templates/Handlebars/ToDo', '.hbs');
 
 		$content = '';
 		foreach($templates as $templatePath) {

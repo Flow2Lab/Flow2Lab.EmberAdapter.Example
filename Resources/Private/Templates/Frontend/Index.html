@@ -1,106 +1,154 @@
-<f:layout name="Default" />
+<f:layout name="Default"/>
 
 <f:section name="Head">
-	<script src="{f:uri.resource(path: 'Scripts/jquery-2.1.0.js')}" ></script>
-	<script src="{f:uri.resource(path: 'Scripts/handlebars-1.3.0.js')}" ></script>
-	<script src="{f:uri.resource(path: 'Scripts/ember-1.5.1.js')}" ></script>
-	<script src="{f:uri.resource(path: 'Scripts/emberdata-1.0.0-beta8.js')}" ></script>
+	<script src="http://emberjs.com.s3.amazonaws.com/getting-started/jquery.min.js"></script>
+	<script src="{f:uri.resource(path: 'Library/EmberJs/handlebars.js')}"></script>
+	<script src="{f:uri.resource(path: 'Library/EmberJs/ember.js')}"></script>
+	<script src="{f:uri.resource(path: 'Library/EmberJs/ember-data.js')}"></script>
 
-	<link href="{f:uri.resource(path: 'Styles/bootstrap.css')}" rel="stylesheet" />
-	<script src="{f:uri.resource(path: 'Scripts/bootstrap.js')}" ></script>
+	<link href="{f:uri.resource(path: 'Styles/Example/ToDo.css')}" rel="stylesheet"/>
 </f:section>
 
 <f:section name="Content">
 	<script>
 
-		App = Ember.Application.create({
+		window.Todos = Ember.Application.create({
 			LOG_TRANSITIONS: true,
-			LOG_BINDINGS: true,
-			LOG_ACTIVE_GENERATION: true,
-			LOG_VIEW_LOOKUPS: true
+			LOG_STACKTRACE_ON_DEPRECATION: true,
+			LOG_BINDINGS: true
 		});
 
-		/* Models */
-
-		App.Category = DS.Model.extend();
-		App.Tag = DS.Model.extend();
-		App.Product = DS.Model.extend();
-
-		App.Category.reopen({
-			name: DS.attr('string'),
-			description: DS.attr('string'),
-			products: DS.hasMany(App.Product,  {inverse: 'category'})
+		DS.ActiveModelAdapter.reopen({
+			namespace: 'api/1'
 		});
 
-		App.Tag.reopen({
-			name: DS.attr('string')
-		});
+		Todos.ApplicationAdapter = DS.ActiveModelAdapter.extend();
 
-		App.Product.reopen({
-			name: DS.attr('string'),
-			createdOn: DS.attr('date'),
-			loadedAt: DS.attr('date'),
-			inStock: DS.attr('number'),
-			price: DS.attr('number'),
-
-			category: DS.belongsTo(App.Category),
-			tags: DS.hasMany(App.Tag)
-		});
-
-		/* Routing */
-		App.IndexRoute = Ember.Route.extend({
-			redirect: function() {
-				this.transitionTo('categories');
-			}
-		});
-
-		App.Router.map(function () {
-			this.resource('categories', function() {
-				this.route('new');
-				this.resource('category', {path: ':category_id'});
+		Todos.Router.map(function () {
+			this.resource('todos', {path: '/'}, function () {
+				// additional child routes
+				this.route('active');
+				this.route('completed');
 			});
 		});
 
-		App.CategoriesRoute = Ember.Route.extend({
-			model: function(params) {
-				return this.store.find('category');
+		Todos.TodosRoute = Ember.Route.extend({
+			model: function () {
+				return this.store.find('task');
 			}
 		});
 
-		App.CategoriesController = Ember.ArrayController.extend({
-			needs: [],
+		Todos.TodosIndexRoute = Ember.Route.extend({
+			model: function () {
+				return this.store.find('task');
+			}
+		});
 
+		Todos.TodosActiveRoute = Ember.Route.extend({
+			model: function () {
+				return this.store.filter('task', function (todo) {
+					return !todo.get('isComplete');
+				});
+			},
+			renderTemplate: function (controller) {
+				this.render('todos/index', {controller: controller});
+			}
+		});
+
+		Todos.TodosCompletedRoute = Ember.Route.extend({
+			model: function () {
+				return this.store.filter('task', function (todo) {
+					return todo.get('isComplete');
+				});
+			},
+			renderTemplate: function (controller) {
+				this.render('todos/index', {controller: controller});
+			}
+		});
+
+		Todos.Task = DS.Model.extend({
+			title: DS.attr('string'),
+			isComplete: DS.attr('boolean')
+		});
+
+		Todos.TaskController = Ember.ObjectController.extend({
 			actions: {
-				add: function() {
-					newRecord = this.store.createRecord('category', {name: 'New Name'});
-					this.transitionToRoute("category", newRecord);
+				editTodo: function () {
+					this.set('isEditing', true);
 				},
-				save: function () {
-					var newRecord = this.get('model');
-					newRecord.save().then(function(model) {
-						//controller.transitionToRoute("categories");
-					}, function(model){
-						alert("Error while saving record!");
-					});
+				acceptChanges: function () {
+					this.set('isEditing', false);
+
+					if (Ember.isEmpty(this.get('model.title'))) {
+						this.send('removeTodo');
+					} else {
+						this.get('model').save();
+					}
+				},
+				removeTodo: function () {
+					var task = this.get('model');
+					task.deleteRecord();
+					task.save();
 				}
-			}
+			},
+
+			isEditing: false,
+
+			isCompleted: function (key, value) {
+				var model = this.get('model');
+
+				if (value === undefined) {
+					// property being used as a getter
+					return model.get('isComplete');
+				} else {
+					// property being used as  setter
+					model.set('isComplete', value);
+					model.save();
+					return value;
+				}
+			}.property('model.isComplete')
 		});
 
-		App.CategoryController = Ember.ObjectController.extend({
-			needs: [],
-
+		Todos.TodosController = Ember.ArrayController.extend({
 			actions: {
-				save: function () {
-					var newRecord = this.get('model');
-					newRecord.save().then(function(model) {
-						//controller.transitionToRoute("categories");
-					}, function(model){
-						alert("Error while saving record!");
+				createTodo: function () {
+					// Get the todo title set by the "New Todo" text field
+					var title = this.get('newTitle');
+					if (!title.trim()) {
+						return;
+					}
+
+					// Create the new Todo model
+					var todo = this.store.createRecord('task', {
+						title: title,
+						isCompleted: false
 					});
+
+					// Clear the "New Todo" text field
+					this.set('newTitle', '');
+
+					// Save the new model
+					todo.save();
 				}
+			},
+
+			remaining: function () {
+				return this.filterProperty('isComplete', false).get('length');
+			}.property('@each.isComplete'),
+
+			inflection: function () {
+				var remaining = this.get('remaining');
+				return remaining === 1 ? 'item' : 'items';
+			}.property('remaining')
+		});
+
+		Todos.EditTodoView = Ember.TextField.extend({
+			didInsertElement: function () {
+				this.$().focus();
 			}
 		});
 
+		Ember.Handlebars.helper('edit-todo', Todos.EditTodoView);
 	</script>
 
 

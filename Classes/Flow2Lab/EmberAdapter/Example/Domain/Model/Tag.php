@@ -1,8 +1,8 @@
 <?php
-namespace Flowpack\EmberAdapter\Example\Domain\Model;
+namespace Flow2Lab\EmberAdapter\Example\Domain\Model;
 
 use TYPO3\Flow\Annotations as Flow;
-use Flowpack\EmberAdapter\Annotations as Ember;
+use Flow2Lab\EmberAdapter\Annotations as Ember;
 
 /**
  * @Flow\ValueObject

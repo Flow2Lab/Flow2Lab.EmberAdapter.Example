@@ -1,8 +1,8 @@
 <?php
-namespace Flowpack\EmberAdapter\Example\Controller;
+namespace Flow2Lab\EmberAdapter\Example\Controller;
 
-use Flowpack\EmberAdapter\Example\Domain\Model\Product;
-use Flowpack\EmberAdapter\Example\Domain\Repository\ProductRepository;
+use Flow2Lab\EmberAdapter\Example\Domain\Model\Product;
+use Flow2Lab\EmberAdapter\Example\Domain\Repository\ProductRepository;
 use TYPO3\Flow\Mvc\Controller\RestController;
 use TYPO3\Flow\Annotations as Flow;
 

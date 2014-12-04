@@ -1,0 +1,7 @@
+'Task':
+  className: Flow2Lab\EmberAdapter\Example\Domain\Model\Task
+  properties:
+    'title':
+      type: 'string'
+    'isComplete':
+      type: 'boolean'

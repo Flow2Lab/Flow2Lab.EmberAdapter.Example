@@ -1,26 +1,68 @@
-# Add this to your installations routing configuration
-#
-#-
-#  name: 'EmberAdapter Example'
-#  uriPattern: '<EmberAdapterExample>'
-#  defaults:
-#    '@format': 'json'
-#  subRoutes:
-#    EmberAdapterExample:
-#      package: Flowpack.EmberAdapter.Example
-
 -
   name: 'EmberAdapter Example :: Appliaction Frontend'
   uriPattern: ''
   defaults:
-    '@package': 'Flowpack.EmberAdapter.Example'
+    '@package': 'Flow2Lab.EmberAdapter.Example'
     '@controller': 'Frontend'
+
+
+#
+# REST list
+#
+-
+  name: 'EmberAdapter Example :: REST API tasks'
+  uriPattern: 'api/1/tasks'
+  defaults:
+    '@package': 'Flow2Lab.EmberAdapter.Example'
+    '@controller': 'Rest\Task'
+    '@action': 'list'
+    '@format': 'json'
+  httpMethods: ['GET']
+
+#
+# REST Create
+#
+-
+  name: 'EmberAdapter Example :: REST API Resource Identifier POST'
+  uriPattern: 'api/1/tasks'
+  defaults:
+    '@package': 'Flow2Lab.EmberAdapter.Example'
+    '@controller': 'Rest\Task'
+    '@action': 'create'
+    '@format': 'json'
+  httpMethods: ['POST']
+#
+# REST Update
+#
+-
+  name: 'EmberAdapter Example :: REST API Task UPDATE'
+  uriPattern: 'api/1/tasks/{model}'
+  defaults:
+    '@package': 'Flow2Lab.EmberAdapter.Example'
+    '@controller': 'Rest\Task'
+    '@action': 'update'
+    '@format': 'json'
+  httpMethods: ['PUT']
+
+#
+# REST Delete
+#
+-
+  name: 'EmberAdapter Example :: REST API Task DELETE'
+  uriPattern: 'api/1/tasks/{model}'
+  defaults:
+    '@package': 'Flow2Lab.EmberAdapter.Example'
+    '@controller': 'Rest\Task'
+    '@action': 'delete'
+    '@format': 'json'
+  httpMethods: ['DELETE']
+
 
 -
   name: 'EmberAdapter Example :: Controller with Argument'
   uriPattern: 'products/{product}'
   defaults:
-    '@package': 'Flowpack.EmberAdapter.Example'
+    '@package': 'Flow2Lab.EmberAdapter.Example'
     '@controller': 'Product'
   httpMethods: ['GET', 'PUT', 'DELETE']
 
@@ -28,7 +70,7 @@
   name: 'EmberAdapter Example :: Controller'
   uriPattern: 'products'
   defaults:
-    '@package': 'Flowpack.EmberAdapter.Example'
+    '@package': 'Flow2Lab.EmberAdapter.Example'
     '@controller': 'Product'
   httpMethods: ['GET', 'POST']
 
@@ -36,7 +78,7 @@
   name: 'EmberAdapter Example :: CategoryController with Argument'
   uriPattern: 'categories/{category}'
   defaults:
-    '@package': 'Flowpack.EmberAdapter.Example'
+    '@package': 'Flow2Lab.EmberAdapter.Example'
     '@controller': 'Category'
   httpMethods: ['GET', 'PUT', 'DELETE']
 
@@ -44,6 +86,6 @@
   name: 'EmberAdapter Example :: CategoryController'
   uriPattern: 'categories'
   defaults:
-    '@package': 'Flowpack.EmberAdapter.Example'
+    '@package': 'Flow2Lab.EmberAdapter.Example'
     '@controller': 'Category'
   httpMethods: ['GET', 'POST']

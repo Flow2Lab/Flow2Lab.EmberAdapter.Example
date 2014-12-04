@@ -1,9 +1,9 @@
 <?php
-namespace Flowpack\EmberAdapter\Example\Domain\Model;
+namespace Flow2Lab\EmberAdapter\Example\Domain\Model;
 
 use TYPO3\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
-use Flowpack\EmberAdapter\Annotations as Ember;
+use Flow2Lab\EmberAdapter\Annotations as Ember;
 
 /**
  * A category for products.
@@ -28,7 +28,7 @@ class Category {
 	/**
 	 * This is just an example on how bidirectional relations are handled
 	 *
-	 * @var \Doctrine\Common\Collections\Collection<\Flowpack\EmberAdapter\Example\Domain\Model\Product>
+	 * @var \Doctrine\Common\Collections\Collection<\Flow2Lab\EmberAdapter\Example\Domain\Model\Product>
 	 * @ORM\OneToMany(mappedBy="category")
 	 * @Ember\Attribute
 	 * @Ember\HasMany(model="Product", sideload=true)

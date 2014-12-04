@@ -1,10 +1,10 @@
 <?php
-namespace Flowpack\EmberAdapter\Example\Domain\Model;
+namespace Flow2Lab\EmberAdapter\Example\Domain\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use TYPO3\Flow\Annotations as Flow;
-use Flowpack\EmberAdapter\Annotations as Ember;
+use Flow2Lab\EmberAdapter\Annotations as Ember;
 
 /**
  * A simple product. It has a category as well as tags and a few other properties.
@@ -57,7 +57,7 @@ class Product {
 	protected $internalPrice = 0.0;
 
 	/**
-	 * @var \Doctrine\Common\Collections\Collection<\Flowpack\EmberAdapter\Example\Domain\Model\Tag>
+	 * @var \Doctrine\Common\Collections\Collection<\Flow2Lab\EmberAdapter\Example\Domain\Model\Tag>
 	 * @ORM\ManyToMany
 	 * @Ember\Attribute
 	 * @Ember\HasMany(model="Tag", sideload=true)
@@ -74,14 +74,14 @@ class Product {
 	}
 
 	/**
-	 * @param \Flowpack\EmberAdapter\Example\Domain\Model\Category $category
+	 * @param \Flow2Lab\EmberAdapter\Example\Domain\Model\Category $category
 	 */
 	public function setCategory($category) {
 		$this->category = $category;
 	}
 
 	/**
-	 * @return \Flowpack\EmberAdapter\Example\Domain\Model\Category
+	 * @return \Flow2Lab\EmberAdapter\Example\Domain\Model\Category
 	 */
 	public function getCategory() {
 		return $this->category;
